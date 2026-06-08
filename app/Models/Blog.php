@@ -4,6 +4,7 @@ namespace App\Models;
 
 use QL\QueryList;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Blog extends Model
 {
@@ -130,10 +131,15 @@ class Blog extends Model
     }
 
     public function getContentAttribute() {
-        $value = $this->attributes['content'] ?? null;
+        $value = $this->attributes['content'] ?? '';
 
         if ($value) {
-            return str_replace('https://global-ec-1251174242.cos.ap-hongkong.myqcloud.com', '/image', $value);
+            if (Str::contains($value, 'nanjing')) {
+                return str_replace('https://cc-1251174242.cos.ap-nanjing.myqcloud.com', '/image', $value);
+            } elseif (Str::contains($value, 'hongkong')) {
+                return str_replace('https://global-ec-1251174242.cos.ap-hongkong.myqcloud.com', '/img', $value);
+            }
+
         }
 
         return $value;
@@ -143,7 +149,11 @@ class Blog extends Model
         $value = $this->attributes['head_img'] ?? null;
 
         if ($value) {
-            return str_replace('https://global-ec-1251174242.cos.ap-hongkong.myqcloud.com', '/image', $value);
+            if (Str::contains($value, 'nanjing')) {
+                return str_replace('https://cc-1251174242.cos.ap-nanjing.myqcloud.com', '/image', $value);
+            } elseif (Str::contains($value, 'hongkong')) {
+                return str_replace('https://global-ec-1251174242.cos.ap-hongkong.myqcloud.com', '/img', $value);
+            }
         }
 
         return $value;
